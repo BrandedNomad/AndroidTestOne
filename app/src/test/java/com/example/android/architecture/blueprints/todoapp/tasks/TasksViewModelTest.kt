@@ -8,8 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.not
-import org.hamcrest.Matchers.nullValue
+import org.hamcrest.Matchers.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,5 +33,20 @@ class TasksViewModelTest {
         val value = taskViewModel.newTaskEvent.getOrAwaitValue()
 
         assertThat(value.getContentIfNotHandled(),not(nullValue()))
+    }
+
+    @Test
+    fun setFilterAllTasks_tasksAddViewVisible() {
+
+        // Given a fresh ViewModel
+        val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+
+        // When the filter type is ALL_TASKS
+        tasksViewModel.setFiltering(TasksFilterType.ALL_TASKS)
+
+        var value = tasksViewModel.tasksAddViewVisible.getOrAwaitValue()
+
+        // Then the "Add task" action is visible
+        assertThat(value, equalTo(true))
     }
 }
